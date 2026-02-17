@@ -60,7 +60,7 @@ fun InputText(
 
     Text(
       text = when (setError.value) {
-        true -> "Content must be at least 6 characters long"
+        true -> "Content must be at least 3 characters long"
         else -> ""
       },
       modifier = Modifier.padding(16.dp),
