@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.julhdev.pendientes.data.repository.TaskRepository
 import com.julhdev.pendientes.data.room.Task
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,6 +15,7 @@ import javax.inject.Inject
  * ViewModel class for managing tasks.
  * This class provides methods for submitting, updating, and deleting tasks.
  */
+@HiltViewModel
 class TaskViewModel @Inject constructor(
   private val repository: TaskRepository
 ): ViewModel() {
@@ -33,7 +35,7 @@ class TaskViewModel @Inject constructor(
    * Submits a new task to the repository.
    * @param task The task to submit.
    */
-  fun submitTask(task: Task) {
+  fun insertTask(task: Task) {
     viewModelScope.launch(Dispatchers.IO) {
       repository.insertTask(task)
     }

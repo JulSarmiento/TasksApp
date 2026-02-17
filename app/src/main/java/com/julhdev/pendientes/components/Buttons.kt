@@ -1,6 +1,5 @@
 package com.julhdev.pendientes.components
 
-import androidx.compose.foundation.background
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
@@ -18,14 +17,14 @@ fun AddIconBtn (
   modifier: Modifier
 ) {
     IconButton(
+      onClick = action,
+      modifier = Modifier
+        .clip(MaterialTheme.shapes.small)
+        .then(modifier),
       colors = IconButtonDefaults.iconButtonColors(
         containerColor = MaterialTheme.colorScheme.primary,
         contentColor = Color.White
       ),
-      onClick = action,
-      modifier = Modifier
-        .clip(MaterialTheme.shapes.small)
-        .then(modifier)
     ) {
       Icon(
         imageVector = Icons.Filled.Add,
