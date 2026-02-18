@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface TaskDao {
 
-  @Query("SELECT * FROM tasks ORDER BY timestamp DESC")
+  @Query("SELECT * FROM tasks  ORDER BY isCompleted DESC , hasPriority DESC, timestamp DESC")
   fun getTasks(): Flow<List<Task>>
 
   @Query("SELECT * FROM tasks WHERE id = :id")
