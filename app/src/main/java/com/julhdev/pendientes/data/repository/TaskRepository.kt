@@ -2,11 +2,15 @@ package com.julhdev.pendientes.data.repository
 
 import com.julhdev.pendientes.data.room.Task
 import com.julhdev.pendientes.data.room.TaskDao
+import com.julhdev.pendientes.utils.UIState
 import jakarta.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 
 
 /**
@@ -22,8 +26,18 @@ class TaskRepository @Inject constructor(
    * Retrieves a flow of all tasks from the database.
    * @return A flow emitting a list of all tasks in the database.
    */
-  fun getTasks(): Flow<List<Task>> {
-    return taskDao.getTasks().flowOn(Dispatchers.IO).conflate()
+  fun getTasks(): Flow<UIState<List<Task>>> {
+    return taskDao.getTasks()
+      .map<List<Task>, UIState<List<Task>>> {
+        UIState.Success(it)
+      }
+      .onStart {
+        emit(UIState.Loading)
+      }
+      .catch { e ->
+        emit(UIState.Error(e.message.toString()))
+      }
+      .flowOn(Dispatchers.IO)
   }
 
   /**
@@ -31,8 +45,18 @@ class TaskRepository @Inject constructor(
    * @param id The ID of the task to retrieve.
    * @return A flow emitting the specified task from the database.
    */
-  fun getTask(id: Int): Flow<Task?> {
-    return taskDao.getTask(id).flowOn(Dispatchers.IO).conflate()
+  fun getTask(id: Int): Flow<UIState<Task?>> {
+    return taskDao.getTask(id)
+      .map<Task?, UIState<Task?>> {
+        UIState.Success(it)
+      }
+      .onStart {
+        emit(UIState.Loading)
+      }
+      .catch { e ->
+        emit(UIState.Error(e.message.toString()))
+      }
+      .flowOn(Dispatchers.IO)
   }
 
   /**

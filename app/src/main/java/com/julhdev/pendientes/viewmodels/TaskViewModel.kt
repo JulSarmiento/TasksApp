@@ -1,13 +1,18 @@
 package com.julhdev.pendientes.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.julhdev.pendientes.data.repository.TaskRepository
 import com.julhdev.pendientes.data.room.Task
+import com.julhdev.pendientes.utils.UIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,18 +23,16 @@ import javax.inject.Inject
 @HiltViewModel
 class TaskViewModel @Inject constructor(
   private val repository: TaskRepository
-): ViewModel() {
+) : ViewModel() {
 
-  private val _tasks = MutableStateFlow<List<Task>>(emptyList())
-  val tasks = _tasks.asStateFlow()
+  val tasksState: StateFlow<UIState<List<Task>>> =
+    repository.getTasks()
+      .stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = UIState.Loading
+      )
 
-  init {
-   viewModelScope.launch(Dispatchers.IO) {
-     repository.getTasks().collect { tasks ->
-       _tasks.value = tasks
-     }
-   }
-  }
 
   /**
    * Submits a new task to the repository.
@@ -37,7 +40,11 @@ class TaskViewModel @Inject constructor(
    */
   fun insertTask(task: Task) {
     viewModelScope.launch(Dispatchers.IO) {
-      repository.insertTask(task)
+      try {
+        repository.insertTask(task)
+      } catch (e: Exception) {
+        UIState.Error(e.message.toString())
+      }
     }
   }
 
@@ -47,7 +54,11 @@ class TaskViewModel @Inject constructor(
    */
   fun updateTask(task: Task) {
     viewModelScope.launch(Dispatchers.IO) {
-      repository.updateTask(task)
+      try {
+        repository.updateTask(task)
+      } catch (e: Exception) {
+        UIState.Error(e.message.toString())
+      }
     }
   }
 
@@ -57,8 +68,11 @@ class TaskViewModel @Inject constructor(
    */
   fun deleteTask(task: Task) {
     viewModelScope.launch(Dispatchers.IO) {
-      repository.deleteTask(task)
+      try {
+        repository.deleteTask(task)
+      } catch (e: Exception) {
+        UIState.Error(e.message.toString())
+      }
     }
   }
-
 }

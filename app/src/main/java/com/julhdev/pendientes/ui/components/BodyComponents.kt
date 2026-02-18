@@ -1,4 +1,4 @@
-package com.julhdev.pendientes.components
+package com.julhdev.pendientes.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
