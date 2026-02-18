@@ -17,7 +17,6 @@ private val AppColorScheme = darkColorScheme(
 )
 @Composable
 fun PendientesTheme(
-  darkTheme: Boolean = false,
   content: @Composable () -> Unit
 ) {
   MaterialTheme(

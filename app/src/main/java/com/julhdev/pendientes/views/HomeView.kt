@@ -22,7 +22,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,6 +47,10 @@ import com.julhdev.pendientes.viewmodels.TaskViewModel
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 
+/**
+ * Composable function representing the home screen of the application.
+ * @param viewModel The view model for managing tasks.
+ */
 @Composable
 fun HomeView(
   viewModel: TaskViewModel,
@@ -56,6 +59,7 @@ fun HomeView(
   val showInputDialog = rememberSaveable { mutableStateOf(false) }
   val inputText = rememberSaveable { mutableStateOf("") }
   val state by viewModel.tasksState.collectAsState()
+
   Scaffold(
     modifier = Modifier.fillMaxSize(),
     topBar = {
@@ -158,7 +162,6 @@ fun HomeView(
 
 /**
  * Composable function representing the content of the home screen when there are no tasks.
- * @receiver The Modifier to be applied to the content.
  */
 @Composable
 fun NoHomeContent() {

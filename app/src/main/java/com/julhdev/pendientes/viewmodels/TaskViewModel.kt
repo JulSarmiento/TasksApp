@@ -1,6 +1,5 @@
 package com.julhdev.pendientes.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.julhdev.pendientes.data.repository.TaskRepository
@@ -8,10 +7,8 @@ import com.julhdev.pendientes.data.room.Task
 import com.julhdev.pendientes.utils.UIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -32,7 +29,6 @@ class TaskViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = UIState.Loading
       )
-
 
   /**
    * Submits a new task to the repository.

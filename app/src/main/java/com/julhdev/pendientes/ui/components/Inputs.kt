@@ -40,13 +40,13 @@ import com.julhdev.pendientes.ui.theme.NeonCyan
  */
 @Composable
 fun InputText(
-placeholder: String,
-value: String,
-onValueChange: (String) -> Unit,
-showInputDialog: MutableState<Boolean>,
-action: () -> Unit = {},
-modifier: Modifier = Modifier
-) {
+    modifier: Modifier = Modifier,
+    placeholder: String,
+    value: String,
+    onValueChange: (String) -> Unit,
+    showInputDialog: MutableState<Boolean>,
+    action: () -> Unit = {},
+  ) {
 
   val setError = remember { mutableStateOf(false) }
   val focusRequester = remember { FocusRequester() }
@@ -112,15 +112,10 @@ modifier: Modifier = Modifier
         ),
         keyboardActions = KeyboardActions(
           onDone = {
-
-            setError.value =
-              value.isBlank() || value.length < 3
-
             if (!setError.value) {
               action()
               onValueChange("")
               showInputDialog.value = false
-
             }
           }
         ),

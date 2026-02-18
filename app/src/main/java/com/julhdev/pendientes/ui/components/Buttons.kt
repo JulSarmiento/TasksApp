@@ -22,7 +22,7 @@ import com.julhdev.pendientes.ui.theme.NeonCyan
  * @param modifier The modifier to be applied to the button.
  */
 @Composable
-fun AddIconBtn (
+fun AddIconBtn(
   action: () -> Unit = {},
   modifier: Modifier
 ) {
@@ -74,18 +74,13 @@ fun CardIconBtn(
     modifier = Modifier
       .padding(end = 10.dp)
   ) {
-    (if(iconChange == null) {
-      iconDefault
-    } else {
-      if(validator) iconChange else iconDefault
-    }).let {
-      Icon(
-        imageVector = it,
-        contentDescription = contentDescription,
-        tint = if (validator) tintChange else tintDefault,
-        modifier = Modifier
-          .padding(10.dp)
-      )
-    }
+    val icon = if (iconChange == null || !validator) iconDefault else iconChange
+    Icon(
+      imageVector = icon,
+      contentDescription = contentDescription,
+      tint = if (validator) tintChange else tintDefault,
+      modifier = Modifier
+        .padding(10.dp)
+    )
   }
 }
