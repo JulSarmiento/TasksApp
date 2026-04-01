@@ -108,7 +108,10 @@ fun HomeView(
             value = viewModel.contentInput,
             onValueChange = { viewModel.onContentChange(it) },
             showInputDialog = showInputDialog,
-            action = {viewModel.insertTask()},
+            action = {
+              viewModel.insertTask()
+              showInputDialog.value = false
+            },
           )
           Spacer(
             modifier = Modifier

@@ -46,7 +46,6 @@ class TaskViewModel @Inject constructor(
 
   /**
    * Submits a new task to the repository.
-   * @return The ID of the submitted task.
    */
   fun insertTask() {
     if (contentInput.trim().isBlank()) return

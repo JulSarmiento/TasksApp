@@ -112,8 +112,13 @@ fun InputText(
         ),
         keyboardActions = KeyboardActions(
           onDone = {
+            setError.value =
+              value.isBlank() || value.length < 3
+
             if (!setError.value) {
               action()
+              onValueChange("")
+              showInputDialog.value = false
             }
           }
         ),
