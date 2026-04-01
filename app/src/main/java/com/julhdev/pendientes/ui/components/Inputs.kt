@@ -40,12 +40,12 @@ import com.julhdev.pendientes.ui.theme.NeonCyan
  */
 @Composable
 fun InputText(
-    modifier: Modifier = Modifier,
-    placeholder: String,
-    value: String,
-    onValueChange: (String) -> Unit,
-    showInputDialog: MutableState<Boolean>,
-    action: () -> Unit = {},
+  modifier: Modifier = Modifier,
+  placeholder: String,
+  value: String,
+  onValueChange: (String) -> Unit,
+  showInputDialog: MutableState<Boolean>,
+  action: () -> Unit = {},
   ) {
 
   val setError = remember { mutableStateOf(false) }
@@ -86,7 +86,7 @@ fun InputText(
         },
         singleLine = true,
         modifier = Modifier
-          .weight(1f) // 👈 importante
+          .weight(1f)
           .background(
             color = InputBackground,
             shape = RoundedCornerShape(50)
@@ -112,6 +112,9 @@ fun InputText(
         ),
         keyboardActions = KeyboardActions(
           onDone = {
+            setError.value =
+              value.isBlank() || value.length < 3
+
             if (!setError.value) {
               action()
               onValueChange("")

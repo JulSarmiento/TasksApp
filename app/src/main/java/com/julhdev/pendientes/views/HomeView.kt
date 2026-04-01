@@ -1,5 +1,6 @@
 package com.julhdev.pendientes.views
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -57,7 +58,6 @@ fun HomeView(
 ) {
 
   val showInputDialog = rememberSaveable { mutableStateOf(false) }
-  val inputText = rememberSaveable { mutableStateOf("") }
   val state by viewModel.tasksState.collectAsState()
 
   Scaffold(
@@ -104,21 +104,15 @@ fun HomeView(
       ) {
         if (showInputDialog.value) {
           InputText(
-
             placeholder = "Nueva Tarea",
-            value = inputText.value,
-            onValueChange = { inputText.value = it },
+            value = viewModel.contentInput,
+            onValueChange = { viewModel.onContentChange(it) },
             showInputDialog = showInputDialog,
             action = {
-              viewModel.insertTask(
-                Task(
-                  content = inputText.value,
-                  timestamp = System.currentTimeMillis()
-                )
-              )
+              viewModel.insertTask()
+              showInputDialog.value = false
             },
           )
-
           Spacer(
             modifier = Modifier
               .fillMaxWidth()
@@ -137,9 +131,7 @@ fun HomeView(
           }
 
           is UIState.Success -> {
-
             val tasks = currentState.data
-
             if (tasks.isEmpty()) {
               NoHomeContent()
             } else {
@@ -209,6 +201,8 @@ fun HomeContent(
   viewModel: TaskViewModel,
   tasks: List<Task>
 ) {
+
+  Log.d("HomeContent", "tasks: $tasks")
   LazyColumn(
     verticalArrangement = Arrangement.spacedBy(10.dp),
     modifier = Modifier
