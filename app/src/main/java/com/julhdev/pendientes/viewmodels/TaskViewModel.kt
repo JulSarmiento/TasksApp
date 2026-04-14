@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.julhdev.pendientes.data.repository.TaskRepository
 import com.julhdev.pendientes.data.room.Task
+import com.julhdev.pendientes.data.useCases.GetTasksUseCase
 import com.julhdev.pendientes.utils.UIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -22,6 +23,7 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class TaskViewModel @Inject constructor(
+  private val getTasksUseCase: GetTasksUseCase,
   private val repository: TaskRepository
 ) : ViewModel() {
 
@@ -35,6 +37,8 @@ class TaskViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = UIState.Loading
       )
+
+
 
   /**
    * Updates the content of the input field.
